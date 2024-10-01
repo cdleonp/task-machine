@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modalRef.close()"
+    ></button>
+</div>
+<form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+    <div class="modal-body">
+        <!-- Task name input -->
+        <mdb-form-control class="mb-4">
+          <input mdbInput type="text" id="task-name" class="form-control" formControlName="taskName"/>
+          <label mdbLabel class="form-label" for="task-name">Nombre de la tarea</label>
+        </mdb-form-control>
+        <!-- Date picker -->
+        <!-- <mdb-form-control class="mb-4">
+            <input mdbInput type="text" id="due-date" class="form-control" formControlName="dueDate" [disabled]="true"/>
+            <label mdbLabel class="form-label" for="due-date">Fecha límite</label>
+          </mdb-form-control> -->
+        <!-- Submit button -->
+        <!-- <button mdbRipple type="button" class="btn btn-primary btn-block mb-4">Sign up</button> -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+            Cancelar
+        </button>
+        <button mdbRipple type="submit" class="btn btn-primary" [disabled]="!addTaskForm.valid">
+            Guardar
+        </button>
+    </div>
+</form>
