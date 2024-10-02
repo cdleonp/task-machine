@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MdbModalRef } from 'mdb-angular-ui-kit/modal';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-modal',
@@ -10,7 +10,11 @@ import { FormBuilder } from '@angular/forms';
 export class ModalComponent {
   title: string | null = null;
   addTaskForm = this.fb.group({
-    taskName: [''],
+    taskName: ['', [
+      Validators.required,
+      Validators.pattern('^\\S.*$'),
+      Validators.minLength(3),
+    ]],
     // dueDate: [''],
   });
 
@@ -26,8 +30,8 @@ export class ModalComponent {
 
   onSubmit() {
     // TODO: Use EventEmitter with form value
-    const { taskName } = this.addTaskForm.value
-    // console.warn(taskName);
-    this.modalRef.close(taskName)
+    // const { taskName } = this.addTaskForm.value;
+    // console.warn(this.addTaskForm.value);
+    this.modalRef.close(this.addTaskForm.value);
   }
 }

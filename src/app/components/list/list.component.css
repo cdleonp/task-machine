@@ -118,6 +118,7 @@
     position: relative;
     z-index: 2;
     border-top: 1px solid #e6e6e6;
+    min-height: 200px;
   }
   
   .toggle-all {
@@ -316,11 +317,15 @@
   }
   
   .filters li a:hover {
-    border-color: #6e49fe;
+    border-color: #4c33b1;
+    cursor: pointer;
   }
   
   .filters li a.selected {
-    border-color: #4c33b1;
+    background-color: #4c33b1;
+    color: white;
+    pointer-events: none;   /* Deshabilitar los clics */
+    cursor: not-allowed;
   }
   
   .clear-completed,

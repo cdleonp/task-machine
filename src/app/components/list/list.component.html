@@ -2,34 +2,51 @@
     <header class="header">
       <div class="container">
         <h1>Mi trabajo para hoy</h1>
-        <p>Todas tus tareas en un sólo lugar</p>
+        <p>Todas las tareas en un sólo lugar</p>
         <!-- <input
           class="new-todo"
           placeholder="Type new todo"
           autofocus
           type="text"
         /> -->
-        <mdb-form-control class="form-white">
+        <!-- <mdb-form-control class="form-white">
           <input mdbInput autofocus type="text" id="search" class="form-control" (input)="searchHandler($event)"/>
           <label mdbLabel class="form-label" for="search">Buscar tarea</label>
-        </mdb-form-control>
+        </mdb-form-control> -->
+        <!-- <mdb-form-control class="form-white">
+          <input mdbInput autofocus type="text" id="search" class="form-control" [formControl]="searchInputCtrl"/>
+          <label mdbLabel class="form-label" for="search">Buscar tarea</label>
+        </mdb-form-control> -->
+        <!-- <p>Término: {{ searchInputCtrl.value }}</p> -->
           
       </div>
     </header>
     <div class="container task-machine-wrapper">
       <!-- This section should be hidden by default and shown when there are todos -->
+       <!-- <pre>
+        <code>
+          {{ filteredTasks() | json }}
+        </code>
+       </pre> -->
       <section class="main">
-        <ul class="todo-list list-group list-group-light">
-            <li class="list-group-item" *ngFor="let task of updatedTasks(); index as i">
+        <div *ngIf="tasks().length > 0; else noTasks">
+          <ul class="todo-list list-group list-group-light" *ngIf="filteredTasks().length > 0; else noMatches">
+            <li class="list-group-item" [class.completed]="task.completed" *ngFor="let task of filteredTasks(); index as i">
               <div class="view">
-                <input class="toggle" type="checkbox" />
-                <label>{{ i }} {{ task }}</label>
-                <button class="destroy"></button>
+                <input class="toggle" type="checkbox" [checked]="task.completed" (change)="toggleCompleteTask(task.id)"/>
+                <label>{{ i + 1 }} {{ task.name }}</label>
+                <button class="destroy" (click)="deleteTask(task.id)"></button>
               </div>
               <input class="edit" value="Learn JavaScript" />
             </li>
-        </ul>
-          
+          </ul>
+          <ng-template #noMatches>
+            <p class="text-center pt-5">No hay coincidencias para tu búsqueda.</p>
+          </ng-template>
+        </div>          
+        <ng-template #noTasks>
+          <p class="text-center pt-5">Sin tareas. Agrega una para empezar tu día.</p>
+        </ng-template>
         <!-- <ul class="todo-list">
           <li class="completed">
             <div class="view">
@@ -58,23 +75,26 @@
         </ul> -->
       </section>
       <!-- This footer should be hidden by default and shown when there are todos -->
-      <footer class="footer">
+      <footer class="footer" *ngIf="tasks().length > 0">
         <!-- This should be `0 items left` by default -->
-        <span class="todo-count"><strong>0</strong> item left</span>
-        <!-- Remove this if you don't implement routing -->
+        <span class="todo-count">
+          <strong>{{ filteredTasks().length }}</strong>
+          <span *ngIf="filteredTasks().length === 1; else someTasks"> tarea</span>
+          <ng-template #someTasks> tareas</ng-template>
+        </span>
         <ul class="filters">
           <li>
-            <a routerLink="/" class="selected">All</a>
+            <a (click)="filterTasks('all')" [ariaDisabled]="filter() === 'all'" [class.selected]="filter() === 'all'">Todas</a>
           </li>
           <li>
-            <a routerLink="/pending">Pending</a>
+            <a (click)="filterTasks('pending')" [class.selected]="filter() === 'pending'">Pendientes</a>
           </li>
           <li>
-            <a routerLink="/completed">Completed</a>
+            <a (click)="filterTasks('completed')" [class.selected]="filter() === 'completed'">Completadas</a>
           </li>
         </ul>
         <!-- Hidden if no completed items are left ↓ -->
-        <button class="clear-completed">Clear completed</button>
+        <!-- <button class="clear-completed">Clear completed</button> -->
       </footer>
     </div>
     <button class="btn btn-primary" (click)="openAddTaskModal()">Open modal</button>
