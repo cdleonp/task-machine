@@ -226,7 +226,7 @@
   
   .todo-list li label {
     word-break: break-all;
-    padding: 15px 15px 15px 60px;
+    padding: 8px 15px 5px 60px;
     display: block;
     line-height: 1.2;
     transition: color 0.4s;
@@ -247,7 +247,7 @@
     bottom: 0;
     width: 40px;
     height: 40px;
-    margin: auto 0;
+    margin: 20px auto 0;
     font-size: 30px;
     color: #949494;
     transition: color 0.2s ease-out;
@@ -279,7 +279,6 @@
   
   .footer {
     padding: 1rem 1.5rem;
-    height: 20px;
     text-align: center;
     font-size: 15px;
     border-top: 1px solid #e6e6e6;
@@ -298,7 +297,6 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    position: absolute;
     right: 0;
     left: 0;
   }
@@ -362,6 +360,15 @@
   .info a:hover {
     text-decoration: underline;
   }
+
+  .add-task {
+    top: -40px;
+    position: relative;
+  }
+
+  .add-task-button {
+    margin: 30px 0 15px auto;
+  }
   
   /*
       Hack to remove background from Mobile Safari.
@@ -373,17 +380,7 @@
       background: none;
     }
   
-    .todo-list li .toggle {
+    /* .todo-list li .toggle {
       height: 40px;
-    }
-  }
-  
-  @media (max-width: 430px) {
-    .footer {
-      height: 50px;
-    }
-  
-    .filters {
-      bottom: 10px;
-    }
+    } */
   }
