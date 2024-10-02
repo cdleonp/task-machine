@@ -54,7 +54,7 @@ export class ListComponent {
         title: 'Nueva tarea',
       }
     });
-    this.modalRef.onClose.subscribe((data: any) => {
+    this.modalRef.onClose.subscribe((data: Task) => {
       // console.log(message);
       if(data) {
         this.createTask(data);
@@ -62,11 +62,19 @@ export class ListComponent {
     });
   }
 
-  createTask(taskData: any) {
+  createTask(taskData: Task) {
     // console.log(input.value);
     const newTask = {
       id: Date.now(),
-      name: taskData.taskName.trim(),
+      taskName: taskData.taskName.trim(),
+      dueDate: taskData.dueDate,
+      associatedPeople: taskData.associatedPeople.map(person => ({
+        personName: person.personName.trim(),
+        personAge: person.personAge,
+        skills: person.skills.map(skill => ({
+          skillName: skill.skillName.trim() // Asegúrate de obtener el skillName
+        }))
+      })),
       completed: false,
     };
     this.tasks.update((tasks) => [...tasks, newTask]);

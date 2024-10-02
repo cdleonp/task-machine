@@ -7,13 +7,101 @@
       (click)="modalRef.close()"
     ></button>
 </div>
-<form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
     <div class="modal-body">
         <!-- Task name input -->
         <mdb-form-control class="mb-4">
-          <input mdbInput type="text" id="task-name" class="form-control" formControlName="taskName"/>
+          <input mdbInput
+            type="text"
+            id="task-name"
+            class="form-control"
+            formControlName="taskName"
+            [class.is-invalid]="addTaskForm.get('taskName')?.invalid && addTaskForm.get('taskName')?.touched"
+          />
           <label mdbLabel class="form-label" for="task-name">Nombre de la tarea</label>
+          <div *ngIf="addTaskForm.get('taskName')?.invalid && addTaskForm.get('taskName')?.touched" class="invalid-feedback">
+            <small *ngIf="addTaskForm.get('taskName')?.errors?.['required']">El campo es requerido.</small>
+            <small *ngIf="addTaskForm.get('taskName')?.errors?.['minlength']">Longitud mínima de 3.</small>
+          </div>
         </mdb-form-control>
+        <mdb-form-control class="mb-4">
+          <input mdbInput
+            type="date"
+            id="due-date"
+            class="form-control"
+            formControlName="dueDate"
+            [min]="minDate"
+            [class.is-invalid]="addTaskForm.get('dueDate')?.invalid && addTaskForm.get('dueDate')?.touched"
+          />
+          <label mdbLabel class="form-label" for="due-date">Fecha límite</label>
+          <div *ngIf="addTaskForm.get('dueDate')?.invalid && addTaskForm.get('dueDate')?.touched" class="invalid-feedback">
+            <small *ngIf="addTaskForm.get('dueDate')?.errors?.['required']">El campo es requerido.</small>
+          </div>
+        </mdb-form-control>
+        
+  <!-- FormArray de associatedPeople -->
+  <div formArrayName="associatedPeople" class="mb-4">
+    <div *ngFor="let person of associatedPeople.controls; let personIndex = index" [formGroupName]="personIndex" class="mb-4">
+      <h3>Persona {{ personIndex + 1 }}</h3>
+
+      <!-- Campo para el nombre de la persona -->
+      <mdb-form-control class="mb-3">
+        <input mdbInput
+          id="person-name"
+          formControlName="personName"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="person.get('personName')?.invalid && person.get('personName')?.touched"
+        >
+        <label mdbLabel for="person-name" class="form-label">Nombre completo</label>
+        <div *ngIf="person.get('personName')?.invalid && person.get('personName')?.touched" class="invalid-feedback">
+          <small *ngIf="person.get('personName')?.errors?.['required']">El campo es requerido.</small>
+          <small *ngIf="person.get('personName')?.errors?.['minlength']">Longitud mínima de 4.</small>
+        </div>
+      </mdb-form-control>
+
+      <!-- Campo para la edad de la persona -->
+      <mdb-form-control class="mb-3">        
+        <input mdbInput
+          id="person-age"
+          formControlName="personAge"
+          type="number"
+          class="form-control"
+          [class.is-invalid]="person.get('personAge')?.invalid && person.get('personAge')?.touched"
+        >
+        <label mdbLabel for="person-age" class="form-label">Edad</label>
+        <div *ngIf="person.get('personAge')?.invalid && person.get('personAge')?.touched" class="invalid-feedback">
+          <small *ngIf="person.get('personAge')?.errors?.['required']">El campo es requerido.</small>
+          <small *ngIf="person.get('personAge')?.errors?.['min']">La edad mínima es 18.</small>
+        </div>
+      </mdb-form-control>
+
+      <!-- FormArray de skills -->
+      <div formArrayName="skills" class="mb-3">
+        <h4>Habilidades:</h4>
+        <div *ngFor="let skill of getSkillsForPerson(personIndex).controls; let skillIndex = index" [formGroupName]="skillIndex" class="mb-3 d-flex justify-content-between align-items-baseline skill-container">
+            <mdb-form-control class="mb-3">
+              <input mdbInput
+                type="text"
+                formControlName="skillName"
+                class="form-control"
+                placeholder="Nombre de habilidad"
+              >              
+            </mdb-form-control>
+            <button type="button" class="btn btn-danger" (click)="removeSkillFromPerson(personIndex, skillIndex)">Eliminar habilidad</button>
+        </div>
+        <hr />
+        <button type="button" class="btn btn-primary" (click)="addSkillToPerson(personIndex)">Agregar habilidad</button>
+      </div>
+      <hr />
+      <hr />
+      <button type="button" class="btn btn-danger d-block m-0 ms-auto" (click)="removePerson(personIndex)">Eliminar persona</button>
+    </div>
+    <hr />
+  </div>
+
+  <!-- Botón para agregar una nueva persona -->
+  <button type="button" class="btn btn-secondary mb-4" (click)="addNewPerson()">Agregar persona</button>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
