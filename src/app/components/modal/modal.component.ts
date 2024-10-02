@@ -29,8 +29,6 @@ export class ModalComponent {
   }
 
   onSubmit() {
-    // TODO: Use EventEmitter with form value
-    // const { taskName } = this.addTaskForm.value;
     // console.warn(this.addTaskForm.value);
     this.modalRef.close(this.addTaskForm.value);
   }

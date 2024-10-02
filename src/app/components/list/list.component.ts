@@ -2,7 +2,7 @@ import { inject, Injector, Component, computed, effect, signal } from '@angular/
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { ModalComponent } from '../modal/modal.component';
 import { Task, FilterBy } from '../../models/task.model';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-list',
@@ -16,12 +16,9 @@ export class ListComponent {
 
   constructor(
     private modalService: MdbModalService,
-  ) {
-    // this.searchInputCtrl.valueChanges.subscribe(value => this.searchHandler(value))
-  }
+  ) {}
 
   ngOnInit(): void {
-    // console.log("Filtered tasks:", this.filteredTasks());  // Verifica si filteredTasks se evalúa aquí
     const taskInStorage = localStorage.getItem('taskList');
     if(taskInStorage) {
       const tasksRetrieved = JSON.parse(taskInStorage);
@@ -33,13 +30,12 @@ export class ListComponent {
   getTasks() {
     effect(() => {
       const tasks = this.tasks();
-      console.log(tasks);
+      // console.log(tasks);
       localStorage.setItem('taskList', JSON.stringify(tasks));
     }, { injector: this.injector });
   }
   
   tasks = signal<Task[]>([]);
-  // updatedTasks = signal<Task[]>([...this.tasks]);
   filter = signal<FilterBy>('all');
   filteredTasks = computed(() => {
     const filter = this.filter();
@@ -52,7 +48,6 @@ export class ListComponent {
   });
 
   openAddTaskModal() {
-    // this.searchInputCtrl.setValue('');
     this.modalRef = this.modalService.open(ModalComponent, {
       modalClass: 'modal-dialog-centered',
       data: {
@@ -67,20 +62,6 @@ export class ListComponent {
     });
   }
 
-  // searchHandler(event: Event) {
-  //   const input = event.target as HTMLInputElement;
-  //   // console.log(input.value);
-  //   const regEx = new RegExp(input.value, 'i');
-  //   const searchedTasks = this.tasks.filter(task => regEx.test(task.name));
-  //   this.updatedTasks.set(searchedTasks);
-  // }
-
-  // searchHandler(term: string) {
-  //   const regEx = new RegExp(term, 'i');
-  //   const searchedTasks = this.tasks().filter(task => regEx.test(task.name));
-  //   this.updatedTasks.set(searchedTasks);
-  // }
-
   createTask(taskData: any) {
     // console.log(input.value);
     const newTask = {
@@ -88,18 +69,15 @@ export class ListComponent {
       name: taskData.taskName.trim(),
       completed: false,
     };
-    // this.tasks.push(newTask);
     this.tasks.update((tasks) => [...tasks, newTask]);
   }
 
   deleteTask(taskId: number) {
     // console.log(taskIndex);
-    // this.tasks.splice(taskIndex, 1);
     this.tasks.update((tasks) => tasks.filter((task) => task.id !== taskId));
   }
 
   toggleCompleteTask(taskId: number) {
-    // const taskToUpdate = this.tasks()[taskIndex];
     this.tasks.update((tasks) => {
       return tasks.map((task) => {
         if(task.id === taskId) {
@@ -110,13 +88,10 @@ export class ListComponent {
         }
         return task;
       });
-      // tasks[taskIndex].completed = !tasks[taskIndex].completed
     });
   }
 
   filterTasks(filter: FilterBy) {
     this.filter.set(filter);
-    // this.cdr.detectChanges(); 
-    // this.filter.update(value => value);
   }
 }
