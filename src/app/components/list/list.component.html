@@ -2,23 +2,7 @@
     <header class="header">
       <div class="container">
         <h1>Mi trabajo para hoy</h1>
-        <p>Todas las tareas en un sólo lugar</p>
-        <!-- <input
-          class="new-todo"
-          placeholder="Type new todo"
-          autofocus
-          type="text"
-        /> -->
-        <!-- <mdb-form-control class="form-white">
-          <input mdbInput autofocus type="text" id="search" class="form-control" (input)="searchHandler($event)"/>
-          <label mdbLabel class="form-label" for="search">Buscar tarea</label>
-        </mdb-form-control> -->
-        <!-- <mdb-form-control class="form-white">
-          <input mdbInput autofocus type="text" id="search" class="form-control" [formControl]="searchInputCtrl"/>
-          <label mdbLabel class="form-label" for="search">Buscar tarea</label>
-        </mdb-form-control> -->
-        <!-- <p>Término: {{ searchInputCtrl.value }}</p> -->
-          
+        <p>Todas las tareas en un sólo lugar</p>          
       </div>
     </header>
     <div class="container task-machine-wrapper">
@@ -47,7 +31,6 @@
         <ng-template #noTasks>
           <p class="text-center pt-5">Sin tareas. Agrega una para empezar tu día.</p>
         </ng-template>
-        <!-- <ul class="todo-list">
           <li class="completed">
             <div class="view">
               <input class="toggle" type="checkbox" checked />
@@ -74,9 +57,7 @@
           </li>
         </ul> -->
       </section>
-      <!-- This footer should be hidden by default and shown when there are todos -->
       <footer class="footer" *ngIf="tasks().length > 0">
-        <!-- This should be `0 items left` by default -->
         <span class="todo-count">
           <strong>{{ filteredTasks().length }}</strong>
           <span *ngIf="filteredTasks().length === 1; else someTasks"> tarea</span>
@@ -93,8 +74,6 @@
             <a (click)="filterTasks('completed')" [class.selected]="filter() === 'completed'">Completadas</a>
           </li>
         </ul>
-        <!-- Hidden if no completed items are left ↓ -->
-        <!-- <button class="clear-completed">Clear completed</button> -->
       </footer>
     </div>
     <button class="btn btn-primary" (click)="openAddTaskModal()">Open modal</button>
